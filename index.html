@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MKCH Supermarket | Fresh Indian, UK & Ethnic Groceries</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        accent: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #16a34a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #15803d;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen font-sans">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-brand-900 text-white text-xs sm:text-sm py-2 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center space-x-4">
+                <span><i class="fa-solid fa-truck-fast text-accent-500 mr-2"></i> Free Same-Day Local Delivery on orders over £40</span>
+                <span class="hidden md:inline text-brand-500">|</span>
+                <span class="hidden md:inline"><i class="fa-solid fa-store text-accent-500 mr-2"></i> Open 7 Days: 8:00 AM - 9:00 PM</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="tel:+442080000000" class="hover:text-accent-500 transition"><i class="fa-solid fa-phone mr-1"></i> 020 8123 4567</a>
+                <span>|</span>
+                <a href="#contact" class="hover:text-accent-500 transition"><i class="fa-solid fa-location-dot mr-1"></i> London, E6 2ES</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="sticky top-0 z-40 bg-white shadow-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+            <div class="flex items-center justify-between gap-4">
+                
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-3 group">
+                    <div class="bg-gradient-to-tr from-brand-700 to-brand-500 text-white p-2.5 rounded-xl shadow-md group-hover:scale-105 transition transform">
+                        <i class="fa-solid fa-basket-shopping text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-extrabold tracking-tight text-gray-900 flex items-center">
+                            MKCH <span class="text-brand-600 ml-1">Supermarket</span>
+                        </div>
+                        <span class="text-xs text-gray-500 font-medium tracking-wide">AUTHENTIC INDIAN & UK GROCERIES</span>
+                    </div>
+                </a>
+
+                <!-- Search Bar (Desktop) -->
+                <div class="hidden md:flex flex-1 max-w-lg mx-6 relative">
+                    <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="Search Indian spices, TRS, Natco, UK favourites, fresh veggies..." 
+                           class="w-full pl-10 pr-10 py-2.5 bg-gray-100 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-brand-600 focus:bg-white transition">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-gray-400"></i>
+                    <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3.5 top-3 text-gray-400 hover:text-gray-600">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- User Actions -->
+                <div class="flex items-center space-x-3 sm:space-x-5">
+                    <!-- User Profile Dropdown / Sign In / Sign Up -->
+                    <div class="relative">
+                        <button id="profileMenuBtn" onclick="toggleProfileDropdown(event)" class="flex items-center space-x-2 text-gray-700 hover:text-brand-600 focus:outline-none p-1 rounded-xl transition cursor-pointer">
+                            <div class="w-9 h-9 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center font-bold text-sm border-2 border-brand-500 shadow-xs">
+                                <i class="fa-regular fa-user"></i>
+                            </div>
+                            <div class="text-left hidden lg:block">
+                                <span id="profileNavLabel" class="block text-xs font-bold leading-tight">Account</span>
+                                <span class="block text-[10px] text-gray-500">Sign In / Register</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 text-sm">
+                            <div id="loggedOutMenu">
+                                <div class="px-4 py-3 border-b border-gray-100 bg-gray-50/50 rounded-t-2xl">
+                                    <p class="text-xs text-gray-500">Welcome to MKCH</p>
+                                    <p class="text-xs font-bold text-gray-800 mt-0.5">Manage your orders & wishlist</p>
+                                </div>
+                                <button type="button" onclick="openLoginModal(event)" class="w-full text-left px-4 py-2.5 hover:bg-brand-50 text-brand-700 font-bold flex items-center space-x-2 transition cursor-pointer">
+                                    <i class="fa-solid fa-right-to-bracket text-brand-600"></i>
+                                    <span>Sign In</span>
+                                </button>
+                                <button type="button" onclick="openRegisterModal(event)" class="w-full text-left px-4 py-2.5 hover:bg-brand-50 text-gray-700 font-semibold flex items-center space-x-2 transition cursor-pointer">
+                                    <i class="fa-solid fa-user-plus text-accent-500"></i>
+                                    <span>Create Account (Sign Up)</span>
+                                </button>
+                            </div>
+                            <div id="loggedInMenu" class="hidden">
+                                <div class="px-4 py-3 border-b border-gray-100 bg-gray-50/50">
+                                    <p class="text-xs text-gray-500">Signed in as</p>
+                                    <p id="loggedInUserEmail" class="text-xs font-bold text-gray-900 truncate">user@example.com</p>
+                                </div>
+                                <a href="#orders" onclick="closeProfileDropdown()" class="block px-4 py-2 hover:bg-gray-50 text-gray-700 text-xs flex items-center space-x-2">
+                                    <i class="fa-solid fa-box text-brand-600"></i>
+                                    <span>My Orders</span>
+                                </a>
+                                <button type="button" onclick="handleLogout(event)" class="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 text-xs font-semibold flex items-center space-x-2 border-t border-gray-100 mt-1 cursor-pointer">
+                                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                    <span>Sign Out</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="toggleModal('wishlistModal')" class="hidden sm:flex flex-col items-center text-gray-600 hover:text-brand-600 transition relative">
+                        <i class="fa-regular fa-heart text-xl"></i>
+                        <span class="text-xs font-medium mt-0.5">Wishlist</span>
+                    </button>
+
+                    <!-- Cart Trigger Button -->
+                    <button onclick="toggleCartDrawer()" class="flex items-center space-x-2 bg-brand-50 border border-brand-200 text-brand-700 px-3.5 py-2 rounded-xl hover:bg-brand-100 transition shadow-sm relative">
+                        <div class="relative">
+                            <i class="fa-solid fa-cart-shopping text-lg"></i>
+                            <span id="cartCount" class="absolute -top-2 -right-3 bg-accent-500 text-white font-bold text-xs rounded-full h-5 w-5 flex items-center justify-center border-2 border-white">0</span>
+                        </div>
+                        <span id="cartTotalHeader" class="hidden sm:inline text-sm font-bold ml-1">£0.00</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Search Bar -->
+            <div class="mt-3 md:hidden relative">
+                <input type="text" id="mobileSearchInput" onkeyup="handleMobileSearch()" placeholder="Search products..." 
+                       class="w-full pl-10 pr-8 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-600">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400"></i>
+            </div>
+        </div>
+
+        <!-- Navigation Category Bar -->
+        <nav class="bg-gray-900 text-white border-t border-gray-800 overflow-x-auto scrollbar-none">
+            <div class="max-w-7xl mx-auto px-4 flex items-center space-x-1 sm:space-x-2 py-1 text-sm whitespace-nowrap">
+                <button onclick="filterCategory('all', this)" class="category-btn active px-4 py-2 rounded-lg font-semibold bg-brand-600 text-white transition">
+                    <i class="fa-solid fa-border-all mr-1.5"></i> All Products
+                </button>
+                <button onclick="filterCategory('indian', this)" class="category-btn px-4 py-2 rounded-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition">
+                    <i class="fa-solid fa-bowl-rice mr-1.5 text-yellow-400"></i> Indian Products
+                </button>
+                <button onclick="filterCategory('uk', this)" class="category-btn px-4 py-2 rounded-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition">
+                    <i class="fa-solid fa-mug-hot mr-1.5 text-blue-400"></i> UK Products
+                </button>
+                <button onclick="filterCategory('trs', this)" class="category-btn px-4 py-2 rounded-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition">
+                    <i class="fa-solid fa-pepper-hot mr-1.5 text-red-400"></i> TRS Brand
+                </button>
+                <button onclick="filterCategory('natco', this)" class="category-btn px-4 py-2 rounded-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition">
+                    <i class="fa-solid fa-seedling mr-1.5 text-emerald-400"></i> Natco Products
+                </button>
+                <button onclick="filterCategory('vegetables', this)" class="category-btn px-4 py-2 rounded-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition">
+                    <i class="fa-solid fa-carrot mr-1.5 text-orange-400"></i> Fresh Vegetables
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="bg-gradient-to-r from-brand-900 via-brand-800 to-gray-900 text-white py-8 sm:py-12 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="text-center md:text-left md:max-w-xl">
+                <span class="inline-block bg-accent-500 text-gray-900 font-bold text-xs uppercase px-3 py-1 rounded-full mb-3 tracking-wider">East Ham & Manor Park's Favourite Store</span>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+                    Authentic Spices, Fresh Produce & Daily Essentials
+                </h1>
+                <p class="mt-3 text-gray-300 text-sm sm:text-base">
+                    Shop genuine <strong class="text-white">TRS</strong>, <strong class="text-white">Natco</strong>, premium Indian spices, fresh vegetables, and top UK brands under one roof at MKCH Supermarket.
+                </p>
+                <div class="mt-6 flex flex-wrap justify-center md:justify-start gap-3">
+                    <a href="#products-section" class="bg-brand-500 hover:bg-brand-600 text-white font-bold px-6 py-3 rounded-xl transition shadow-lg transform hover:-translate-y-0.5">
+                        Explore Catalogue <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                    <a href="#deals" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-xl backdrop-blur-sm border border-white/20 transition">
+                        Weekly Offers
+                    </a>
+                </div>
+            </div>
+            <!-- Highlight Badges Grid -->
+            <div class="grid grid-cols-2 gap-3 w-full md:w-auto">
+                <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 text-center">
+                    <i class="fa-solid fa-award text-3xl text-accent-500 mb-2"></i>
+                    <h3 class="font-bold text-sm">100% Authentic</h3>
+                    <p class="text-xs text-gray-300">TRS & Natco Guaranteed</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 text-center">
+                    <i class="fa-solid fa-leaf text-3xl text-brand-500 mb-2"></i>
+                    <h3 class="font-bold text-sm">Farm Fresh</h3>
+                    <p class="text-xs text-gray-300">Daily Asian Veggies</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 text-center">
+                    <i class="fa-solid fa-tags text-3xl text-accent-500 mb-2"></i>
+                    <h3 class="font-bold text-sm">Wholesale Prices</h3>
+                    <p class="text-xs text-gray-300">Unbeatable Local Value</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 text-center">
+                    <i class="fa-solid fa-truck-ramp-box text-3xl text-brand-500 mb-2"></i>
+                    <h3 class="font-bold text-sm">Fast Delivery</h3>
+                    <p class="text-xs text-gray-300">London E6 & Beyond</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Section -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="products-section">
+
+        <!-- Controls / Filters Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 flex items-center">
+                    <span id="currentCategoryTitle">All Products</span>
+                    <span id="productCountBadge" class="ml-3 text-xs bg-brand-100 text-brand-800 font-bold px-2.5 py-1 rounded-full">0 items</span>
+                </h2>
+                <p class="text-xs text-gray-500 mt-1">Showing freshest stock available in store and online</p>
+            </div>
+
+            <!-- Sort & Quick Filter Controls -->
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="flex items-center space-x-2">
+                    <label for="sortBy" class="text-xs font-semibold text-gray-600">Sort by:</label>
+                    <select id="sortBy" onchange="sortProducts()" class="bg-gray-50 border border-gray-200 rounded-lg text-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                        <option value="featured">Featured</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="name">Name (A-Z)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Dynamically populated via JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-100 my-6">
+            <i class="fa-solid fa-magnifying-glass text-5xl text-gray-300 mb-4"></i>
+            <h3 class="text-lg font-bold text-gray-700">No products found</h3>
+            <p class="text-sm text-gray-500 mt-1">Try adjusting your search terms or filter selection.</p>
+            <button onclick="clearSearch(); filterCategory('all', document.querySelector('.category-btn'))" class="mt-4 bg-brand-600 text-white font-semibold px-4 py-2 rounded-lg text-sm hover:bg-brand-700 transition">
+                Reset Filters
+            </button>
+        </div>
+
+        <!-- Special Brand Promotion Banners -->
+        <section class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6" id="deals">
+            <!-- TRS Brand Spotlight -->
+            <div class="bg-gradient-to-r from-red-700 to-red-900 rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden shadow-lg">
+                <div class="relative z-10">
+                    <span class="bg-yellow-400 text-red-950 text-xs font-extrabold px-3 py-1 rounded-full uppercase">Official Stockist</span>
+                    <h3 class="text-2xl font-black mt-3">TRS Brand Authentic Spices</h3>
+                    <p class="mt-2 text-red-100 text-sm max-w-sm">From premium Cumin Seeds to fragrant Mustard Oil, explore Britain's favourite Asian spice brand at everyday low prices.</p>
+                    <button onclick="filterCategory('trs', document.querySelectorAll('.category-btn')[3])" class="mt-4 bg-white text-red-900 font-bold px-5 py-2.5 rounded-xl hover:bg-yellow-300 transition text-sm">
+                        Shop TRS Range <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+                <div class="absolute -right-6 -bottom-6 opacity-20 text-9xl">
+                    <i class="fa-solid fa-pepper-hot"></i>
+                </div>
+            </div>
+
+            <!-- Natco Brand Spotlight -->
+            <div class="bg-gradient-to-r from-emerald-700 to-green-900 rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden shadow-lg">
+                <div class="relative z-10">
+                    <span class="bg-amber-300 text-emerald-950 text-xs font-extrabold px-3 py-1 rounded-full uppercase">Top Quality Pulsing</span>
+                    <h3 class="text-2xl font-black mt-3">Natco Pulses, Nuts & Flours</h3>
+                    <p class="mt-2 text-emerald-100 text-sm max-w-sm">Cleaned and packed for freshness. High protein lentils, cashew nuts, and authentic Gram flour.</p>
+                    <button onclick="filterCategory('natco', document.querySelectorAll('.category-btn')[4])" class="mt-4 bg-white text-emerald-900 font-bold px-5 py-2.5 rounded-xl hover:bg-amber-300 transition text-sm">
+                        Shop Natco Range <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+                <div class="absolute -right-6 -bottom-6 opacity-20 text-9xl">
+                    <i class="fa-solid fa-seedling"></i>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Shopping Cart Side Drawer -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+        <!-- Backdrop -->
+        <div onclick="toggleCartDrawer()" class="fixed inset-0 bg-gray-900 bg-opacity-50 transition-opacity backdrop-blur-xs"></div>
+
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                
+                <!-- Drawer Header -->
+                <div class="p-6 bg-brand-900 text-white flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-bag-shopping text-2xl text-accent-500"></i>
+                        <h2 class="text-xl font-bold">Your Shopping Cart</h2>
+                    </div>
+                    <button onclick="toggleCartDrawer()" class="text-gray-300 hover:text-white text-2xl p-1 focus:outline-none">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Drawer Body: Cart Items -->
+                <div class="flex-1 overflow-y-auto p-6 space-y-4" id="cartItemsContainer">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- Drawer Footer: Subtotal & Checkout -->
+                <div class="border-t border-gray-200 p-6 bg-gray-50 space-y-3">
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span>Subtotal</span>
+                        <span id="cartSubtotal" class="font-semibold text-gray-900">£0.00</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span>Estimated Local Delivery</span>
+                        <span id="cartDelivery" class="font-semibold text-gray-900">£2.99</span>
+                    </div>
+                    <div class="flex justify-between text-base font-extrabold text-gray-900 pt-2 border-t border-gray-200">
+                        <span>Total Amount</span>
+                        <span id="cartTotal" class="text-xl text-brand-700">£0.00</span>
+                    </div>
+                    
+                    <p class="text-xs text-gray-500 flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-check text-brand-600"></i> Free delivery applied on orders over £40
+                    </p>
+
+                    <button onclick="openCheckoutModal()" id="checkoutBtn" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2">
+                        <span>Proceed to Checkout</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-60 hidden p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="toggleModal('checkoutModal')" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">Checkout - MKCH Supermarket</h3>
+                <p class="text-xs text-gray-500">Express delivery to East London E6 & surrounding areas</p>
+            </div>
+
+            <form onsubmit="handleCheckoutSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Full Name</label>
+                    <input type="text" required placeholder="John Doe" class="w-full p-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Delivery Address in London</label>
+                    <textarea required placeholder="252 Burges Road, London, E6 2ES" rows="2" class="w-full p-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Phone Number</label>
+                        <input type="tel" required placeholder="07123456789" class="w-full p-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Postcode</label>
+                        <input type="text" required placeholder="E6 2ES" class="w-full p-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Payment Method</label>
+                    <select class="w-full p-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none bg-white">
+                        <option>Cash on Delivery</option>
+                        <option>Credit / Debit Card (Pay at Door)</option>
+                    </select>
+                </div>
+                <div class="pt-2 border-t border-gray-100 flex justify-between items-center text-sm font-bold">
+                    <span>Total to Pay:</span>
+                    <span id="modalCartTotal" class="text-brand-700 text-lg">£0.00</span>
+                </div>
+                <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl shadow-lg transition text-sm">
+                    Confirm Order
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-60 hidden p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl relative">
+            <button onclick="toggleModal('loginModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="w-12 h-12 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                <i class="fa-solid fa-right-to-bracket"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 text-center">Sign In</h3>
+            <p class="text-xs text-gray-500 text-center mt-1 mb-4">Access your MKCH Supermarket account</p>
+
+            <form onsubmit="handleLogin(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Email Address</label>
+                    <input type="email" id="loginEmail" required placeholder="customer@mkch.co.uk" class="w-full p-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Password</label>
+                    <input type="password" required placeholder="••••••••" class="w-full p-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                </div>
+                <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-xl shadow-lg transition text-sm">
+                    Sign In
+                </button>
+            </form>
+
+            <div class="mt-4 text-center text-xs text-gray-500">
+                Don't have an account? 
+                <button type="button" onclick="openRegisterModal(event)" class="text-brand-600 font-bold hover:underline cursor-pointer">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="registerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-60 hidden p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl relative">
+            <button onclick="toggleModal('registerModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="w-12 h-12 bg-accent-500/10 text-accent-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                <i class="fa-solid fa-user-plus"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 text-center">Create Account</h3>
+            <p class="text-xs text-gray-500 text-center mt-1 mb-4">Join MKCH Supermarket for fast ordering</p>
+
+            <form onsubmit="handleRegister(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Full Name</label>
+                    <input type="text" id="regName" required placeholder="John Doe" class="w-full p-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Email Address</label>
+                    <input type="email" id="regEmail" required placeholder="john@example.com" class="w-full p-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Password</label>
+                    <input type="password" required placeholder="••••••••" class="w-full p-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                </div>
+                <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-xl shadow-lg transition text-sm">
+                    Create Account
+                </button>
+            </form>
+
+            <div class="mt-4 text-center text-xs text-gray-500">
+                Already registered? 
+                <button type="button" onclick="openLoginModal(event)" class="text-brand-600 font-bold hover:underline cursor-pointer">Sign In</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="registerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-60 hidden p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl relative">
+            <button onclick="toggleModal('registerModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="w-12 h-12 bg-accent-500/10 text-accent-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                <i class="fa-solid fa-user-plus"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 text-center">Create Account</h3>
+            <p class="text-xs text-gray-500 text-center mt-1 mb-4">Join MKCH Supermarket for fast ordering</p>
+
+            <form onsubmit="handleRegister(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Full Name</label>
+                    <input type="text" id="regName" required placeholder="John Doe" class="w-full p-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Email Address</label>
+                    <input type="email" id="regEmail" required placeholder="john@example.com" class="w-full p-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Password</label>
+                    <input type="password" required placeholder="••••••••" class="w-full p-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                </div>
+                <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-xl shadow-lg transition text-sm">
+                    Create Account
+                </button>
+            </form>
+
+            <div class="mt-4 text-center text-xs text-gray-500">
+                Already registered? 
+                <button onclick="toggleModal('registerModal'); toggleModal('loginModal');" class="text-brand-600 font-bold hover:underline">Sign In</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="wishlistModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-60 hidden p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl relative">
+            <button onclick="toggleModal('wishlistModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="w-12 h-12 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                <i class="fa-regular fa-heart"></i>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900">Your Wishlist</h3>
+            <p class="text-xs text-gray-500 mt-2">Saved items will be stored here for easy weekly restocks.</p>
+            <button onclick="toggleModal('wishlistModal')" class="mt-5 w-full bg-brand-600 text-white font-bold py-2.5 rounded-xl transition text-sm">Close</button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-60 hidden p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl relative">
+            <div class="w-16 h-16 bg-green-100 text-brand-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">Order Confirmed!</h3>
+            <p class="text-sm text-gray-600 mt-2">Thank you for shopping with MKCH Supermarket. We are preparing your fresh groceries now!</p>
+            <div class="mt-4 p-3 bg-brand-50 rounded-xl text-xs text-brand-800">
+                Order ID: <strong>MKCH-89421</strong><br>
+                Store Location: 252 Burges Road, E6 2ES
+            </div>
+            <button onclick="toggleModal('successModal')" class="mt-6 w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-xl transition text-sm">
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 mt-16 border-t-4 border-brand-600">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Col 1: About & Company Info -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="bg-brand-600 text-white p-2 rounded-lg">
+                            <i class="fa-solid fa-basket-shopping text-xl"></i>
+                        </div>
+                        <span class="text-xl font-extrabold text-white">MKCH Supermarket</span>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Your trusted neighbourhood supermarket for premium Indian spices, UK household staples, authentic TRS & Natco ranges, and farm-fresh vegetables delivered daily.
+                    </p>
+                    <div class="flex space-x-3 text-gray-400">
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-600 hover:text-white transition"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-600 hover:text-white transition"><i class="fa-brands fa-instagram text-xs"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-600 hover:text-white transition"><i class="fa-brands fa-whatsapp text-xs"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Categories Links -->
+                <div>
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4 border-b border-gray-800 pb-2">Shop Categories</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#products-section" onclick="filterCategory('indian', document.querySelectorAll('.category-btn')[1])" class="hover:text-brand-500 transition"><i class="fa-solid fa-angle-right text-gray-600 mr-1.5"></i> Indian Spices & Groceries</a></li>
+                        <li><a href="#products-section" onclick="filterCategory('uk', document.querySelectorAll('.category-btn')[2])" class="hover:text-brand-500 transition"><i class="fa-solid fa-angle-right text-gray-600 mr-1.5"></i> UK Essentials & Dairy</a></li>
+                        <li><a href="#products-section" onclick="filterCategory('trs', document.querySelectorAll('.category-btn')[3])" class="hover:text-brand-500 transition"><i class="fa-solid fa-angle-right text-gray-600 mr-1.5"></i> TRS Brand Selection</a></li>
+                        <li><a href="#products-section" onclick="filterCategory('natco', document.querySelectorAll('.category-btn')[4])" class="hover:text-brand-500 transition"><i class="fa-solid fa-angle-right text-gray-600 mr-1.5"></i> Natco Pulses & Nuts</a></li>
+                        <li><a href="#products-section" onclick="filterCategory('vegetables', document.querySelectorAll('.category-btn')[5])" class="hover:text-brand-500 transition"><i class="fa-solid fa-angle-right text-gray-600 mr-1.5"></i> Fresh Asian Vegetables</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Customer Care & Opening Hours -->
+                <div>
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4 border-b border-gray-800 pb-2">Store Information</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li class="flex justify-between py-1 border-b border-gray-800">
+                            <span>Monday - Saturday:</span>
+                            <span class="text-white font-medium">8:00 AM - 9:00 PM</span>
+                        </li>
+                        <li class="flex justify-between py-1 border-b border-gray-800">
+                            <span>Sunday:</span>
+                            <span class="text-white font-medium">9:00 AM - 8:00 PM</span>
+                        </li>
+                        <li class="pt-2 text-gray-400">
+                            <i class="fa-solid fa-truck text-brand-500 mr-1.5"></i> Same-day local delivery across E6, E12, E7, IG1 postcodes.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Store Address & Registered Office (MANDATORY REQUIREMENT) -->
+                <div id="contact">
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4 border-b border-gray-800 pb-2">Store Address & HQ</h4>
+                    <div class="space-y-3 text-xs">
+                        <p class="flex items-start">
+                            <i class="fa-solid fa-location-dot text-brand-500 mr-2.5 mt-0.5 text-sm"></i>
+                            <span>
+                                <strong class="text-white block font-semibold">MKCH Supermarket</strong>
+                                252 Burges Road,<br>
+                                London, England,<br>
+                                E6 2ES
+                            </span>
+                        </p>
+                        <p class="flex items-center">
+                            <i class="fa-solid fa-phone text-brand-500 mr-2.5"></i>
+                            <span>+44 20 8123 4567</span>
+                        </p>
+                        <p class="flex items-center">
+                            <i class="fa-solid fa-envelope text-brand-500 mr-2.5"></i>
+                            <span>info@mkchsupermarket.co.uk</span>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Mandatory Copyright & Company Registration Details -->
+            <div class="mt-12 pt-6 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400 gap-4">
+                <div class="text-center md:text-left">
+                    <p>© <span id="year"></span> <strong>MKCH97 LTD</strong>. All rights reserved.</p>
+                    <p class="text-gray-400 mt-1">
+                        Registered Company Name: <span class="text-gray-300 font-semibold">MKCH97 LTD</span> | 
+                        Company number<span class="text-gray-300"> 17559451</span>
+                    </p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="hover:text-gray-300 transition cursor-pointer">Privacy Policy</span>
+                    <span>•</span>
+                    <span class="hover:text-gray-300 transition cursor-pointer">Terms & Conditions</span>
+                    <span>•</span>
+                    <span class="hover:text-gray-300 transition cursor-pointer">Refund Policy</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        // Set Year Dynamically
+        document.getElementById('year').innerText = new Date().getFullYear();
+
+        // Comprehensive Product Dataset covering Indian, UK, TRS, Natco, and Vegetables
+        const products = [
+            // Indian Products
+            {
+                id: 1,
+                name: "Daawat Extra Long Basmati Rice 5kg",
+                category: "indian",
+                price: 14.99,
+                unit: "5 kg",
+                image: "https://digitalcontent.api.tesco.com/v2/media/ghs/65017624-174c-4af2-b292-d1b61a20a54f/5f60bbb6-84cb-4752-abf1-e327686c3302_1560371261.jpeg?h=960&w=960",
+                badge: "Bestseller",
+                rating: 4.9
+            },
+            {
+                id: 2,
+                name: "Aashirvaad Whole Wheat Atta",
+                category: "indian",
+                price: 8.49,
+                unit: "5 kg",
+                image: "https://groceries.morrisons.com/images-v3/4b85987b-1398-4173-a0c1-3546047c9d74/cd3d3347-6627-4827-a965-20cf7974c807/1280x1280.webp",
+                badge: "Popular",
+                rating: 4.8
+            },
+            {
+                id: 3,
+                name: "Fresh Indian Paneer Cheese",
+                category: "indian",
+                price: 2.99,
+                unit: "225 g",
+                image: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=600&q=80",
+                badge: "Fresh",
+                rating: 4.7
+            },
+            {
+                id: 4,
+                name: "Kaju Katli",
+                category: "indian",
+                price: 5.99,
+                unit: "300 g",
+                image: "https://www.haldiramuk.com/cdn/shop/files/Kaju_Katli_UK_FOP.webp?v=1770805017&width=600",
+                badge: "Snack",
+                rating: 4.6
+            },
+
+            // UK Products
+            {
+                id: 5,
+                name: "PG Tips Original Tea Bags 240s750g",
+                category: "uk",
+                price: 5.00,
+                unit: "240 Bags",
+                image: "https://ecom-su-static-prod.wtrecom.com/images/products/4/LN_378476_BP_4.jpg",
+                badge: "UK Classic",
+                rating: 4.9
+            },
+            {
+                id: 6,
+                name: "Cadbury Dairy Milk Chocolate",
+                category: "uk",
+                price: 1.50,
+                unit: "110 g",
+                image: "https://groceries.morrisons.com/images-v3/4b85987b-1398-4173-a0c1-3546047c9d74/17b00478-9eee-4252-a731-63a71037bf08/1280x1280.webp",
+                badge: "Sweet Treat",
+                rating: 4.9
+            },
+            {
+                id: 7,
+                name: "Heinz Beans in Tomato Sauce 415g",
+                category: "uk",
+                price: 1.40,
+                unit: "415 g",
+                image: "https://digitalcontent.api.tesco.com/v2/media/ghs/06f682ec-b1f7-45b1-9b6e-c64d8456f059/dd337fdd-6a51-4b44-88b7-5d6a43c4fdb8_1661148382.jpeg?h=960&w=960",
+                badge: "Pantry",
+                rating: 4.8
+            },
+            {
+                id: 8,
+                name: "Cathedral City Mature Cheddar Cheese",
+                category: "uk",
+                price: 3.25,
+                unit: "350 g",
+                image: "https://groceries.morrisons.com/images-v3/4b85987b-1398-4173-a0c1-3546047c9d74/bc142f7b-5e6c-450f-a796-0cc02b4ccb98/1280x1280.webp",
+                badge: "Dairy",
+                rating: 4.7
+            },
+
+            // TRS Brand Products
+            {
+                id: 9,
+                name: "TRS Extra Hot Chilli Powder",
+                category: "trs",
+                price: 2.19,
+                unit: "400 g",
+                image: "https://foodbazaar.co.uk/cdn/shop/files/TRSCHILLIPOWDEREXTRAHOT400_389x_1_460x@2x.jpg?v=1716552683https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80",
+                badge: "TRS Brand",
+                rating: 4.8
+            },
+            {
+                id: 10,
+                name: "TRS Whole Cumin Seeds (Jeera)",
+                category: "trs",
+                price: 2.49,
+                unit: "400 g",
+                image: "https://www.exoticestore.com/cdn/shop/products/TRSJeera_Cumin_Whole400g.jpg?v=1590538051&width=1800",
+                badge: "TRS Brand",
+                rating: 4.9
+            },
+            {
+                id: 11,
+                name: "TRS Yellow Split Peas (Toor Dal)",
+                category: "trs",
+                price: 2.99,
+                unit: "1 kg",
+                image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQkcxIHe10qMhgTaGfd5DNmkqJtdjD93ZjIczqzzkBYNJdMfGvCFByENkWsjfGcg2HbntNYzccXqBJJAngEor7EN-YFUECvfWCQZmq5ABhDu4ek8mwDm5es7A",
+                badge: "TRS Brand",
+                rating: 4.7
+            },
+            {
+                id: 12,
+                name: "TRS Pure Mustard Oil",
+                category: "trs",
+                price: 3.79,
+                unit: "500 ml",
+                image: "https://tajstores.co.uk/wp-content/uploads/2022/03/DSC_0002-1-scaled.jpg",
+                badge: "TRS Brand",
+                rating: 4.6
+            },
+
+            // Natco Brand Products
+            {
+                id: 13,
+                name: "Natco Red Kidney Beans (Rajma)",
+                category: "natco",
+                price: 2.69,
+                unit: "1 kg",
+                image: "https://www.bombaybasket.co.uk/_vercel/image?url=https%3A%2F%2Fadmin.bombaybasket.co.uk%2Fpublic%2Fuploads%2Fall%2Fhtv9L6euayiN6dORN7hgbNoLUzTk0w5u4T3jOlt0.webp&w=1920&q=75",
+                badge: "Natco",
+                rating: 4.8
+            },
+            {
+                id: 14,
+                name: "Natco Pure Besan (Gram Flour)",
+                category: "natco",
+                price: 1.99,
+                unit: "1 kg",
+                image: "https://www.bombaybasket.co.uk/_vercel/image?url=https%3A%2F%2Fadmin.bombaybasket.co.uk%2Fpublic%2Fuploads%2Fall%2F2023%2F07%2F202307242257438616864.jpg&w=1920&q=75",
+                badge: "Natco",
+                rating: 4.9
+            },
+            {
+                id: 15,
+                name: "Natco Whole Cashew Nuts",
+                category: "natco",
+                price: 8.99,
+                unit: "750 g",
+                image: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTTcsAuxYlL0RPcqfdOppAedRgnK-8jjGptmb9YCb6igt41X7G_UF7as_p-y2iH3TcnQZ9XXI4XK_YxBe2oKwJ09CBCwCvlBgvLkwjj8BplRWh1lE8lZCU-oQ",
+                badge: "Natco",
+                rating: 4.9
+            },
+            {
+                id: 16,
+                name: "Natco Concentrated Tamarind Paste",
+                category: "natco",
+                price: 3.99,
+                unit: "400 g",
+                image: "https://www.ahabazaar.co.uk/wp-content/uploads/2025/02/TRS-TAMARIND-CONCENTRATE-400G_1-1.webp",
+                badge: "Natco",
+                rating: 4.7
+            },
+
+            // Vegetables
+            {
+                id: 17,
+                name: "Fresh Asian Okra / Bhindi",
+                category: "vegetables",
+                price: 1.49,
+                unit: "300 g",
+                image: "https://i.ebayimg.com/images/g/Xj8AAOSwvBhhn-cC/s-l1600.jpg",
+                badge: "Fresh Daily",
+                rating: 4.8
+            },
+            {
+                id: 18,
+                name: "Fresh Bitter Gourd / Karela",
+                category: "vegetables",
+                price: 1.99,
+                unit: "400 g",
+                image: "https://i.ebayimg.com/images/g/BDsAAOSwnnti-jwK/s-l1600.jpg",
+                badge: "Fresh Daily",
+                rating: 4.5
+            },
+            {
+                id: 19,
+                name: "Fresh Aromatic Curry Leaves",
+                category: "vegetables",
+                price: 0.99,
+                unit: "Bunch",
+                image: "https://i.ebayimg.com/images/g/uTEAAeSwvFRoxDtR/s-l1600.jpg",
+                badge: "Essential",
+                rating: 4.9
+            },
+            {
+                id: 20,
+                name: "Fresh English Red Onions Bag",
+                category: "vegetables",
+                price: 1.25,
+                unit: "1 kg",
+                image: "https://niyis.co.uk/cdn/shop/files/Fresh_red_onions_4kg_sack_crisp_and_bold_delivered_across_the_UK.jpg?v=1775549577&width=500",
+                badge: "Fresh Daily",
+                rating: 4.7
+            }
+        ];
+
+        // App State
+        let activeCategory = 'all';
+        let searchQuery = '';
+        let cart = [];
+        let currentUser = null;
+
+        // DOM Elements
+        const productGrid = document.getElementById('productGrid');
+        const emptyState = document.getElementById('emptyState');
+        const currentCategoryTitle = document.getElementById('currentCategoryTitle');
+        const productCountBadge = document.getElementById('productCountBadge');
+
+        // Initializing App
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartUI();
+
+            // Close profile dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                const profileBtn = document.getElementById('profileMenuBtn');
+                const profileDropdown = document.getElementById('profileDropdown');
+                if (profileBtn && profileDropdown && !profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+
+        // Modal Handlers
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.toggle('hidden');
+            }
+        }
+
+        // Profile Dropdown Controls
+        function toggleProfileDropdown(e) {
+            if (e) e.stopPropagation();
+            const dropdown = document.getElementById('profileDropdown');
+            if (dropdown) {
+                dropdown.classList.toggle('hidden');
+            }
+        }
+
+        function closeProfileDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            if (dropdown) {
+                dropdown.classList.add('hidden');
+            }
+        }
+
+        function openLoginModal(e) {
+            if (e) e.stopPropagation();
+            closeProfileDropdown();
+            document.getElementById('registerModal').classList.add('hidden');
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+
+        function openRegisterModal(e) {
+            if (e) e.stopPropagation();
+            closeProfileDropdown();
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('registerModal').classList.remove('hidden');
+        }
+
+        // Authentication Handlers
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            currentUser = { email: email, name: email.split('@')[0] };
+            updateAuthUI();
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const email = document.getElementById('regEmail').value;
+            const name = document.getElementById('regName').value;
+            currentUser = { email: email, name: name };
+            updateAuthUI();
+            document.getElementById('registerModal').classList.add('hidden');
+        }
+
+        function handleLogout(e) {
+            if (e) e.stopPropagation();
+            currentUser = null;
+            updateAuthUI();
+            closeProfileDropdown();
+        }
+
+        function updateAuthUI() {
+            const loggedOutMenu = document.getElementById('loggedOutMenu');
+            const loggedInMenu = document.getElementById('loggedInMenu');
+            const loggedInUserEmail = document.getElementById('loggedInUserEmail');
+            const profileNavLabel = document.getElementById('profileNavLabel');
+
+            if (currentUser) {
+                loggedOutMenu.classList.add('hidden');
+                loggedInMenu.classList.remove('hidden');
+                loggedInUserEmail.innerText = currentUser.email;
+                profileNavLabel.innerText = currentUser.name;
+            } else {
+                loggedOutMenu.classList.remove('hidden');
+                loggedInMenu.classList.add('hidden');
+                profileNavLabel.innerText = 'Account';
+            }
+        }
+
+        // Render Product Cards
+        function renderProducts() {
+            let filtered = products.filter(p => {
+                const matchesCategory = activeCategory === 'all' || p.category === activeCategory;
+                const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      p.category.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            // Apply sorting
+            const sortVal = document.getElementById('sortBy')?.value || 'featured';
+            if (sortVal === 'price-low') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (sortVal === 'price-high') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (sortVal === 'name') {
+                filtered.sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            // Update Header Counts
+            productCountBadge.innerText = `${filtered.length} items`;
+
+            if (filtered.length === 0) {
+                productGrid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            productGrid.innerHTML = filtered.map(product => `
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition flex flex-col justify-between overflow-hidden group">
+                    <div class="relative overflow-hidden bg-gray-50 h-48 flex items-center justify-center p-4">
+                        <span class="absolute top-3 left-3 bg-brand-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider z-10">
+                            ${product.badge}
+                        </span>
+                        <img src="${product.image}" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/14532d/ffffff?text=${encodeURIComponent(product.name)}';" 
+                             alt="${product.name}" 
+                             class="h-full w-full object-cover group-hover:scale-105 transition duration-300">
+                    </div>
+                    
+                    <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+                        <div>
+                            <div class="flex items-center space-x-1 text-accent-500 text-xs mb-1">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="font-bold text-gray-700">${product.rating}</span>
+                                <span class="text-gray-400 font-normal">(${Math.floor(product.rating * 18)})</span>
+                            </div>
+                            <h3 class="font-bold text-gray-800 text-sm leading-snug line-clamp-2">${product.name}</h3>
+                            <p class="text-xs text-gray-500 mt-1">Pack Size: ${product.unit}</p>
+                        </div>
+                        
+                        <div class="pt-2 border-t border-gray-100 flex items-center justify-between">
+                            <div>
+                                <span class="text-xs text-gray-400 block">Price</span>
+                                <span class="text-lg font-extrabold text-brand-700">£${product.price.toFixed(2)}</span>
+                            </div>
+                            <button onclick="addToCart(${product.id})" class="bg-brand-600 hover:bg-brand-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1 shadow-sm">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Category Filter logic
+        function filterCategory(category, buttonEl) {
+            activeCategory = category;
+            
+            // Update Active Buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white', 'active');
+                btn.classList.add('text-gray-300', 'hover:bg-gray-800');
+            });
+            
+            if (buttonEl) {
+                buttonEl.classList.add('bg-brand-600', 'text-white', 'active');
+                buttonEl.classList.remove('text-gray-300', 'hover:bg-gray-800');
+            }
+
+            // Update Title
+            const titles = {
+                'all': 'All Products',
+                'indian': 'Authentic Indian Groceries & Spices',
+                'uk': 'UK Everyday Essentials',
+                'trs': 'TRS Brand Spice Selection',
+                'natco': 'Natco Brand Pulses & Flours',
+                'vegetables': 'Farm-Fresh Asian Vegetables'
+            };
+            currentCategoryTitle.innerText = titles[category] || 'Products';
+
+            renderProducts();
+        }
+
+        // Search logic
+        function handleSearch() {
+            const input = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            searchQuery = input.value;
+            
+            if (searchQuery.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            renderProducts();
+        }
+
+        function handleMobileSearch() {
+            searchQuery = document.getElementById('mobileSearchInput').value;
+            renderProducts();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('mobileSearchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            searchQuery = '';
+            renderProducts();
+        }
+
+        function sortProducts() {
+            renderProducts();
+        }
+
+        // Cart Drawer Operations
+        function toggleCartDrawer() {
+            document.getElementById('cartDrawer').classList.toggle('hidden');
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartUI();
+            toggleCartDrawer();
+        }
+
+        function updateCartQuantity(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.id !== productId);
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(i => i.id !== productId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartContainer = document.getElementById('cartItemsContainer');
+            const cartCountBadge = document.getElementById('cartCount');
+            const cartTotalHeader = document.getElementById('cartTotalHeader');
+            const cartSubtotalEl = document.getElementById('cartSubtotal');
+            const cartDeliveryEl = document.getElementById('cartDelivery');
+            const cartTotalEl = document.getElementById('cartTotal');
+
+            const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+            const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+            const delivery = subtotal >= 40 || subtotal === 0 ? 0 : 2.99;
+            const total = subtotal + delivery;
+
+            cartCountBadge.innerText = totalItems;
+            cartTotalHeader.innerText = `£${total.toFixed(2)}`;
+            cartSubtotalEl.innerText = `£${subtotal.toFixed(2)}`;
+            cartDeliveryEl.innerText = delivery === 0 ? "FREE" : `£${delivery.toFixed(2)}`;
+            cartTotalEl.innerText = `£${total.toFixed(2)}`;
+
+            if (cart.length === 0) {
+                cartContainer.innerHTML = `
+                    <div class="text-center py-16">
+                        <i class="fa-solid fa-basket-shopping text-4xl text-gray-300 mb-3"></i>
+                        <p class="text-gray-500 font-medium text-sm">Your cart is currently empty</p>
+                        <button onclick="toggleCartDrawer()" class="mt-4 text-xs text-brand-600 font-bold hover:underline">
+                            Start Shopping
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            cartContainer.innerHTML = cart.map(item => `
+                <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                    <img src="${item.image}" alt="${item.name}" class="w-14 h-14 object-cover rounded-lg">
+                    <div class="flex-1">
+                        <h4 class="text-xs font-bold text-gray-800 leading-tight">${item.name}</h4>
+                        <span class="text-[11px] text-gray-500">£${item.price.toFixed(2)} / unit</span>
+                        <div class="flex items-center space-x-2 mt-1.5">
+                            <button onclick="updateCartQuantity(${item.id}, -1)" class="w-6 h-6 rounded-md bg-white border border-gray-300 flex items-center justify-center text-xs font-bold text-gray-700 hover:bg-gray-100">-</button>
+                            <span class="text-xs font-bold text-gray-800">${item.quantity}</span>
+                            <button onclick="updateCartQuantity(${item.id}, 1)" class="w-6 h-6 rounded-md bg-white border border-gray-300 flex items-center justify-center text-xs font-bold text-gray-700 hover:bg-gray-100">+</button>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-extrabold text-brand-700 block">£${(item.price * item.quantity).toFixed(2)}</span>
+                        <button onclick="removeFromCart(${item.id})" class="text-xs text-red-500 hover:text-red-700 mt-2">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openCheckoutModal() {
+            if (cart.length === 0) return;
+            toggleCartDrawer();
+            const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+            const delivery = subtotal >= 40 ? 0 : 2.99;
+            document.getElementById('modalCartTotal').innerText = `£${(subtotal + delivery).toFixed(2)}`;
+            toggleModal('checkoutModal');
+        }
+
+        function handleCheckoutSubmit(e) {
+            e.preventDefault();
+            toggleModal('checkoutModal');
+            cart = [];
+            updateCartUI();
+            toggleModal('successModal');
+        }
+    </script>
+</body>
+</html>
